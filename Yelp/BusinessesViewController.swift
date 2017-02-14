@@ -8,18 +8,22 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class BusinessesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
     
     var businesses: [Business]!
+    
+
     
     @IBOutlet var businessTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        createSearchbar()
         businessTableView.dataSource = self
         businessTableView.delegate = self
         businessTableView.rowHeight = UITableViewAutomaticDimension
         businessTableView.estimatedRowHeight =  120
+        
         
         
         Business.searchWithTerm(term: "Thai", completion: { (businesses: [Business]?, error: Error?) -> Void in
@@ -36,6 +40,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
             }
         )
         
+        
         /* Example of Yelp search with more search options specified
          Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
          self.businesses = businesses
@@ -46,6 +51,15 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
          }
          }
          */
+        
+    }
+    
+    func createSearchbar(){
+        let searchbar = UISearchBar()
+        searchbar.showsCancelButton = false
+        searchbar.placeholder = "Search Restaurants"
+        searchbar.delegate = self
+        self.navigationItem.titleView = searchbar
         
     }
     
@@ -69,6 +83,7 @@ class BusinessesViewController: UIViewController, UITableViewDataSource, UITable
         
         return cell
     }
+    
     
     /*
      // MARK: - Navigation
